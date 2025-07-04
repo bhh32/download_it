@@ -9,18 +9,32 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::parse();
 
     match args.commands {
-        Commands::Single { resume, file } => {
+        Commands::Single {
+            resume,
+            cookie,
+            header_args,
+            url,
+            file_path,
+            file_name,
+        } => {
             if resume.is_none_or(|res| !res) {
-                download_single(&file)?;
+                download_single(url, file_path, file_name, cookie, header_args, None)?;
             } else {
-                download_single_resume(&file)?;
+                download_single_resume(&url)?;
             }
         }
-        Commands::Multi { resume, files } => {
+        Commands::Multi {
+            resume,
+            urls,
+            cookie,
+            header_args,
+            file_path,
+            file_names,
+        } => {
             if resume.is_none_or(|res| !res) {
-                download_multi(&files)?;
+                download_multi(&urls, file_path, file_names, cookie, header_args)?;
             } else {
-                download_multi_resume(&files)?;
+                download_multi_resume(&urls)?;
             }
         }
     }
