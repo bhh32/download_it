@@ -9,15 +9,8 @@ pub struct Cli {
 
 #[derive(Debug, Subcommand)]
 pub enum Commands {
+    /// Download a single file.
     Single {
-        #[arg(
-            short,
-            long,
-            default_missing_value = "true",
-            num_args = 0..=1,
-            help = "Resume a paused/stopped download."
-        )]
-        resume: Option<bool>,
         #[arg(
             short,
             long,
@@ -49,15 +42,8 @@ pub enum Commands {
         /// The download link.
         url: String,
     },
+    /// Download multiple files at once.
     Multi {
-        #[arg(
-            short,
-            long,
-            default_missing_value = "true",
-            num_args = 0..=1,
-            help = "Resume multiple paused/stopped downloads."
-        )]
-        resume: Option<bool>,
         #[arg(
             short,
             long,
@@ -88,5 +74,18 @@ pub enum Commands {
         file_names: Option<Vec<String>>,
         /// The list of download links separated by a space.
         urls: Vec<String>,
+    },
+    /// Resume failed/interrupted download(s).
+    Resume {
+        #[arg(
+            short,
+            long,
+            num_args = 0..=1,
+            default_missing_value = "true",
+            help = "Resume multiple downloads at once."
+        )]
+        multi: Option<bool>,
+        /// A single download link; multiple download links separated by a space if `--multi` is present.
+        url: Vec<String>,
     },
 }
